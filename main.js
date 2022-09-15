@@ -110,17 +110,10 @@ const categories = [
 // );
 
 // Start your code here but please comment out the above logs
+function createHierarchy() {
+  const hierarchy = [];
 
-// create a function that will create a tree structure from the staffMembers array and the categories array
-// this will be based on reportsTo and parent properties
-
-function tree() {
-  // create a new array that will hold the tree structure
-  const tree = [];
-
-  // create a function that will recursively add the staff members to the tree
-  function addStaffMemberToTree(staffMember) {
-    // create a new object that will hold the staff member details
+  function addStaffMemberToHierarchy(staffMember) {
     const staffMemberObject = {
       _id: staffMember._id,
       name: staffMember.name,
@@ -132,33 +125,25 @@ function tree() {
       children: [],
     };
 
-    // check if the staff member has any children
     const children = staffMembers.filter(
       (staffMember) => staffMember.reportsTo === staffMemberObject.slug
     );
 
-    // if the staff member has children, add them to the tree
     if (children.length > 0) {
       children.forEach((child) => {
-        staffMemberObject.children.push(addStaffMemberToTree(child));
+        staffMemberObject.children.push(addStaffMemberToHierarchy(child));
       });
     }
 
-    // return the staff member object
     return staffMemberObject;
   }
 
-  // add the staff members to the tree
   staffMembers.forEach((staffMember) => {
-    // check if the staff member has a parent
     if (staffMember.reportsTo === "") {
-      // add the staff member to the tree
-      tree.push(addStaffMemberToTree(staffMember));
+      hierarchy.push(addStaffMemberToHierarchy(staffMember));
     }
   });
-
-  // return the tree
-  return tree;
+  return hierarchy;
 }
 
-console.log(tree());
+console.log(createHierarchy());
