@@ -1,4 +1,4 @@
-const staffMembers = [
+const combinedObjects = [
   {
     _id: 0,
     name: "David",
@@ -110,7 +110,21 @@ const categories = [
 // );
 
 // Start your code here but please comment out the above logs
-function createHierarchy() {
+function combineStructures() {
+  const combined = [];
+  combinedObjects.forEach((staffMember) => {
+    const category = categories.find(
+      (category) => category.slug === staffMember.category
+    );
+    combined.push({
+      ...staffMember,
+      category: category.name,
+    });
+  });
+  return combined;
+}
+
+function createHierarchy(StaffMembersCategory) {
   const hierarchy = [];
 
   function addStaffMemberToHierarchy(staffMember) {
@@ -125,7 +139,7 @@ function createHierarchy() {
       children: [],
     };
 
-    const children = staffMembers.filter(
+    const children = StaffMembersCategory.filter(
       (staffMember) => staffMember.reportsTo === staffMemberObject.slug
     );
 
@@ -138,7 +152,7 @@ function createHierarchy() {
     return staffMemberObject;
   }
 
-  staffMembers.forEach((staffMember) => {
+  StaffMembersCategory.forEach((staffMember) => {
     if (staffMember.reportsTo === "") {
       hierarchy.push(addStaffMemberToHierarchy(staffMember));
     }
@@ -146,4 +160,24 @@ function createHierarchy() {
   return hierarchy;
 }
 
-console.log(createHierarchy());
+function formattedOutput(hierarchy) {
+  let output = "";
+
+  function displayStaffMember(staffMember, level) {
+    const indentation = "\t".repeat(level);
+    output += `${indentation}* ${staffMember.name} ${staffMember.surname} - ${staffMember.title}: ${staffMember.category}\n`;
+    staffMember.children.forEach((child) => {
+      displayStaffMember(child, level + 1);
+    });
+  }
+
+  hierarchy.forEach((staffMember) => {
+    displayStaffMember(staffMember, 0);
+  });
+
+  return output;
+}
+
+let StaffMembersCategory = combineStructures();
+let hierarchy = createHierarchy(StaffMembersCategory);
+console.info(formattedOutput(hierarchy));
