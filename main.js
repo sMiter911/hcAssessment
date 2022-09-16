@@ -124,7 +124,7 @@ function combineStructures() {
   return combined;
 }
 
-function createHierarchy(StaffMembersCategory) {
+function createHierarchy(staffMembersCategory) {
   const hierarchy = [];
 
   function addStaffMemberToHierarchy(staffMember) {
@@ -139,7 +139,7 @@ function createHierarchy(StaffMembersCategory) {
       children: [],
     };
 
-    const children = StaffMembersCategory.filter(
+    const children = staffMembersCategory.filter(
       (staffMember) => staffMember.reportsTo === staffMemberObject.slug
     );
 
@@ -152,7 +152,7 @@ function createHierarchy(StaffMembersCategory) {
     return staffMemberObject;
   }
 
-  StaffMembersCategory.forEach((staffMember) => {
+  staffMembersCategory.forEach((staffMember) => {
     if (staffMember.reportsTo === "") {
       hierarchy.push(addStaffMemberToHierarchy(staffMember));
     }
