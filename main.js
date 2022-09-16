@@ -178,6 +178,6 @@ function formattedOutput(hierarchy) {
   return output;
 }
 
-let StaffMembersCategory = combineStructures();
-let hierarchy = createHierarchy(StaffMembersCategory);
+let staffMembersCategory = combineStructures();
+let hierarchy = createHierarchy(staffMembersCategory);
 console.info(formattedOutput(hierarchy));
